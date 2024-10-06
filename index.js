@@ -12,7 +12,7 @@ const pm2Result = document.getElementById("pm2");
 const pm10Result = document.getElementById("pm10");
 const so2Result = document.getElementById("so2");
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const latitude = latitudeInput.value;
     const longitude = longitudeInput.value;
@@ -21,33 +21,33 @@ form.addEventListener("submit", (event) => {
     const options = {
         method: 'GET',
         headers: {
-            'x-rapidapi-key': 'c9105b916cmsha40a6c0d8d66662p1da151jsnfb182974b5b9',
+            'x-rapidapi-key': process.env.API_KEY, // Use the environment variable here
             'x-rapidapi-host': 'air-quality.p.rapidapi.com'
         }
     };
 
-    fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            let readings = data.data[0];
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        
+        let readings = data.data[0];
 
-            // Ensure that the data exists before assigning
-            if (readings) {
-                aqiResult.textContent = readings.aqi ?? 'N/A';
-                coResult.textContent = readings.co ?? 'N/A';
-                no2Result.textContent = readings.no2 ?? 'N/A';
-                o3Result.textContent = readings.o3 ?? 'N/A';
-                pm2Result.textContent = readings.pm25 ?? 'N/A';
-                pm10Result.textContent = readings.pm10 ?? 'N/A';
-                so2Result.textContent = readings.so2 ?? 'N/A';
+        // Ensure that the data exists before assigning
+        if (readings) {
+            aqiResult.textContent = readings.aqi ?? 'N/A';
+            coResult.textContent = readings.co ?? 'N/A';
+            no2Result.textContent = readings.no2 ?? 'N/A';
+            o3Result.textContent = readings.o3 ?? 'N/A';
+            pm2Result.textContent = readings.pm25 ?? 'N/A';
+            pm10Result.textContent = readings.pm10 ?? 'N/A';
+            so2Result.textContent = readings.so2 ?? 'N/A';
 
-                // Show the result container
-                resultContainer.style.display = "block";
-            } else {
-                console.log("No data available for the provided location.");
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching air quality data:', error);
-        });
+            // Show the result container
+            resultContainer.style.display = "block";
+        } else {
+            console.log("No data available for the provided location.");
+        }
+    } catch (error) {
+        console.error('Error fetching air quality data:', error);
+    }
 });
