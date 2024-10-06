@@ -21,7 +21,7 @@ form.addEventListener("submit", (event) => {
     const options = {
         method: 'GET',
         headers: {
-            'x-rapidapi-key': 'c9105b916cmsha40a6c0d8d66662p1da151jsnfb182974b5b9',
+            'x-rapidapi-key': 'b32472ce6fmsh005750edfde49d9p17cb36jsn8687861b4a9c',
             'x-rapidapi-host': 'air-quality.p.rapidapi.com'
         }
     };
